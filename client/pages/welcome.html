@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome — VELTECH Hotel</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <style>
+    body {
+      background: url('/hotel7.jpeg') center/cover no-repeat fixed;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.72); backdrop-filter: blur(6px); z-index: 0; }
+    .welcome-card {
+      position: relative; z-index: 1;
+      max-width: 520px;
+      width: 90%;
+      background: rgba(17,17,17,0.92);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 56px 48px;
+      text-align: center;
+      box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+      animation: fadeUp 0.8s ease forwards;
+    }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(40px)} to{opacity:1;transform:translateY(0)} }
+    .welcome-icon { font-size: 3.5rem; margin-bottom: 20px; }
+    .welcome-brand { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: var(--gold); letter-spacing: 3px; margin-bottom: 24px; }
+    .welcome-title { font-size: 2rem; color: var(--white); margin-bottom: 12px; }
+    .welcome-name { color: var(--gold); }
+    .welcome-text { color: var(--text-muted); font-size: 0.95rem; line-height: 1.7; margin-bottom: 36px; }
+    .welcome-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .divider { width: 60px; height: 2px; background: var(--gold); margin: 20px auto; border-radius: 2px; }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="welcome-card">
+    <div class="welcome-icon">🏨</div>
+    <div class="welcome-brand">VELTECH HOTEL</div>
+    <div class="divider"></div>
+    <h1 class="welcome-title">Welcome, <span class="welcome-name" id="userName">Guest</span>!</h1>
+    <p class="welcome-text">Your account has been created successfully. You're now part of the VELTECH family. Explore our luxurious rooms and book your perfect stay.</p>
+    <div class="welcome-actions">
+      <a href="/rooms" class="btn btn-primary btn-lg">Explore Rooms</a>
+      <a href="/" class="btn btn-outline btn-lg">Go to Home</a>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script>
+    if (!isLoggedIn()) { window.location.href = '/login'; }
+    const user = getUser();
+    if (user) document.getElementById('userName').textContent = user.name.split(' ')[0];
+  </script>
+</body>
+</html>

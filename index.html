@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VELTECH Hotel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: url('hotel2.jpg') no-repeat center center/cover;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+   
+    .overlay {
+      background: rgba(0, 0, 0, 0.6);
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.8);
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.6em;
+      letter-spacing: 1px;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffd700;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 120px 20px 60px;
+    }
+
+    .hero h2 {
+      font-size: 2.5em;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      font-size: 1.2em;
+    }
+
+    .content {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 30px;
+      margin: 40px auto;
+      width: 90%;
+      max-width: 1000px;
+    }
+
+    .hotel-row {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .hotel-item img {
+      width: 300px;
+      height: 200px;
+      object-fit: cover;
+      border-radius: 10px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .hotel-item img:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.9);
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9em;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .hero h2 { font-size: 2em; }
+      .hotel-item img { width: 90%; height: auto; }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <header>
+      <h1>VELTECH HOTEL</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="signup.html">Signup</a>
+        <a href="login.html">Login</a>
+      </nav>
+    </header>
+
+    <section class="hero">
+      <h2>Welcome to VELTECH Hotel</h2>
+      <p>Experience comfort and luxury like never before</p>
+    </section>
+
+    <section class="content">
+      <h2 style="text-align:center;">Our Hotels</h2>
+      <div class="hotel-row">
+        <div class="hotel-item"><img src="hotel1.png" alt="Hotel 1"></div>
+        <div class="hotel-item"><img src="hotel2.jpg" alt="Hotel 2"></div>
+        <div class="hotel-item"><img src="hotel3.jpg" alt="Hotel 3"></div>
+        <div class="hotel-item"><img src="hotel4.jpeg" alt="Hotel 4"></div>
+        <div class="hotel-item"><img src="hotel5.jpeg" alt="Hotel 5"></div>
+        <div class="hotel-item"><img src="hotel6.jpeg" alt="Hotel 6"></div>
+        <div class="hotel-item"><img src="hotel7.jpeg" alt="Hotel 7"></div>
+      </div>
+
+      <h2>About Us</h2>
+      <p>
+        VELTECH Hotel offers a world-class stay experience with modern facilities, elegant interiors, and the best hospitality in the city. 
+        We provide comfortable and luxurious rooms to make your stay memorable.
+      </p>
+
+      <h2>Contact Us</h2>
+      <p>📞 For inquiries and reservations, please contact us: <strong>+91 7981404021</strong></p>
+    </section>
+
+    <footer>
+      &copy; 2023 VELTECH Hotel | Designed by Teja Priyan
+    </footer>
+  </div>
+</body>
+</html>

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Book a Room — VELTECH Hotel</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <style>
+    .booking-page { padding: 110px 40px 60px; max-width: 1100px; margin: 0 auto; }
+    .booking-grid { display: grid; grid-template-columns: 1fr 380px; gap: 40px; align-items: start; }
+    .booking-form-card { background: var(--dark-3); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 36px; }
+    .booking-form-card h2 { font-size: 1.6rem; color: var(--white); margin-bottom: 8px; }
+    .booking-form-card p { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 28px; }
+    .section-divider { font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin: 24px 0 16px; font-weight: 600; padding-bottom: 8px; border-bottom: 1px solid var(--glass-border); }
+
+    /* Summary Card */
+    .summary-card { background: var(--dark-3); border: 1px solid var(--glass-border); border-radius: var(--radius-lg); padding: 28px; position: sticky; top: 90px; }
+    .summary-card h3 { font-size: 1.1rem; color: var(--white); margin-bottom: 20px; }
+    .summary-room-img { width: 100%; height: 160px; object-fit: cover; border-radius: var(--radius); margin-bottom: 16px; }
+    .summary-room-name { font-size: 1.1rem; color: var(--white); margin-bottom: 4px; }
+    .summary-room-price { color: var(--gold); font-size: 0.9rem; margin-bottom: 16px; }
+    .summary-line { display: flex; justify-content: space-between; font-size: 0.88rem; color: var(--text-muted); margin-bottom: 10px; }
+    .summary-line.total { color: var(--white); font-weight: 600; font-size: 1rem; padding-top: 12px; border-top: 1px solid var(--glass-border); margin-top: 4px; }
+    .summary-line.total span:last-child { color: var(--gold); font-size: 1.1rem; }
+
+    /* Success */
+    .booking-success { display: none; text-align: center; padding: 60px 20px; }
+    .booking-success .success-icon { font-size: 4rem; margin-bottom: 20px; }
+    .booking-success h2 { font-size: 1.8rem; color: var(--white); margin-bottom: 12px; }
+    .booking-success p { color: var(--text-muted); margin-bottom: 30px; }
+    .booking-ref { background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3); border-radius: var(--radius); padding: 16px; margin-bottom: 28px; }
+    .booking-ref span { font-size: 0.8rem; color: var(--text-muted); display: block; margin-bottom: 4px; }
+    .booking-ref strong { font-size: 1.1rem; color: var(--gold); }
+
+    @media (max-width: 900px) {
+      .booking-grid { grid-template-columns: 1fr; }
+      .summary-card { position: static; }
+      .booking-page { padding: 100px 20px 40px; }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+
+  <div class="booking-page">
+    <div id="bookingContent">
+      <div style="margin-bottom:32px;">
+        <div class="section-tag">Reservation</div>
+        <h1 style="font-size:2rem; color:var(--white); margin-top:8px;">Book Your Stay</h1>
+      </div>
+
+      <div class="booking-grid">
+        <!-- FORM -->
+        <div class="booking-form-card">
+          <h2>Guest Details</h2>
+          <p>Fill in your information to complete the reservation</p>
+
+          <div id="errorMsg" style="display:none; background:rgba(239,68,68,0.1); border:1px solid rgba(239,68,68,0.3); color:#fca5a5; padding:12px 16px; border-radius:var(--radius); font-size:0.88rem; margin-bottom:16px;"></div>
+
+          <form id="bookingForm">
+            <div class="section-divider">Personal Information</div>
+            <div class="form-row">
+              <div class="form-group"><label>Full Name</label><input type="text" id="fullName" placeholder="Your full name" required></div>
+              <div class="form-group"><label>Phone Number</label><input type="tel" id="phone" placeholder="+91 XXXXX XXXXX" required></div>
+            </div>
+            <div class="form-group"><label>Email Address</label><input type="email" id="email" placeholder="you@example.com" required></div>
+
+            <div class="section-divider">Stay Details</div>
+            <div class="form-row">
+              <div class="form-group"><label>Check-In Date</label><input type="date" id="checkInDate" required></div>
+              <div class="form-group"><label>Check-Out Date</label><input type="date" id="checkOutDate" required></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>Number of Guests</label>
+                <select id="guests">
+                  <option value="1">1 Guest</option>
+                  <option value="2" selected>2 Guests</option>
+                  <option value="3">3 Guests</option>
+                  <option value="4">4 Guests</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Room Type</label>
+                <select id="roomId" required></select>
+              </div>
+            </div>
+            <div class="form-group"><label>Special Requests (Optional)</label><textarea id="specialRequest" rows="3" placeholder="Any special arrangements, dietary requirements, etc."></textarea></div>
+
+            <div class="section-divider">ID Verification</div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>ID Proof Type</label>
+                <select id="idProofType" required>
+                  <option value="">Select ID Type</option>
+                  <option value="Aadhaar">Aadhaar Card</option>
+                  <option value="Passport">Passport</option>
+                  <option value="Driving License">Driving License</option>
+                  <option value="Voter ID">Voter ID</option>
+                  <option value="PAN Card">PAN Card</option>
+                </select>
+              </div>
+              <div class="form-group"><label>ID Number</label><input type="text" id="idProofNumber" placeholder="Enter ID number" required></div>
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-lg" style="width:100%; justify-content:center; margin-top:8px;" id="submitBtn">
+              Confirm Booking
+            </button>
+          </form>
+        </div>
+
+        <!-- SUMMARY -->
+        <div class="summary-card" id="summaryCard">
+          <h3>Booking Summary</h3>
+          <div id="summaryContent">
+            <div class="empty-state"><div class="spinner"></div><p style="margin-top:12px; font-size:0.85rem;">Loading room details...</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SUCCESS STATE -->
+    <div class="booking-success" id="bookingSuccess">
+      <div class="success-icon">🎉</div>
+      <h2>Booking Confirmed!</h2>
+      <p>Your reservation has been successfully placed. We look forward to welcoming you.</p>
+      <div class="booking-ref">
+        <span>Booking Reference</span>
+        <strong id="bookingRef">—</strong>
+      </div>
+      <div style="display:flex; gap:14px; justify-content:center; flex-wrap:wrap;">
+        <a href="/profile" class="btn btn-primary">View My Bookings</a>
+        <a href="/" class="btn btn-outline">Back to Home</a>
+      </div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="/js/utils.js"></script>
+  <script>
+    document.getElementById('navbar-placeholder').innerHTML = navbarHTML();
+    document.getElementById('footer-placeholder').innerHTML = footerHTML();
+    setupNavbar();
+
+    if (!requireAuth()) {}
+
+    const params = new URLSearchParams(window.location.search);
+    const preRoomId = params.get('roomId') || '';
+    const preCheckIn = params.get('checkIn') || '';
+    const preCheckOut = params.get('checkOut') || '';
+
+    let rooms = [];
+    let selectedRoom = null;
+
+    // Set min dates
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('checkInDate').min = today;
+    document.getElementById('checkOutDate').min = today;
+    if (preCheckIn) document.getElementById('checkInDate').value = preCheckIn;
+    if (preCheckOut) document.getElementById('checkOutDate').value = preCheckOut;
+
+    // Pre-fill user info
+    const user = getUser();
+    if (user) {
+      document.getElementById('email').value = user.email || '';
+      document.getElementById('fullName').value = user.name || '';
+    }
+
+    async function loadRooms() {
+      try {
+        rooms = await apiFetch('/rooms');
+        const select = document.getElementById('roomId');
+        select.innerHTML = '<option value="">Select a room</option>' +
+          rooms.map(r => `<option value="${r._id}" ${r._id === preRoomId ? 'selected' : ''} ${!r.available ? 'disabled' : ''}>${r.title} — ${formatCurrency(r.price)}/night${!r.available ? ' (Unavailable)' : ''}</option>`).join('');
+
+        if (preRoomId) {
+          selectedRoom = rooms.find(r => r._id === preRoomId);
+          updateSummary();
+        } else {
+          document.getElementById('summaryContent').innerHTML = '<p style="color:var(--text-muted); font-size:0.88rem; text-align:center; padding:20px 0;">Select a room to see summary</p>';
+        }
+      } catch (err) {
+        showToast('Failed to load rooms', 'error');
+      }
+    }
+
+    document.getElementById('roomId').addEventListener('change', (e) => {
+      selectedRoom = rooms.find(r => r._id === e.target.value);
+      updateSummary();
+    });
+
+    document.getElementById('checkInDate').addEventListener('change', updateSummary);
+    document.getElementById('checkOutDate').addEventListener('change', updateSummary);
+
+    function updateSummary() {
+      if (!selectedRoom) return;
+      const checkIn = document.getElementById('checkInDate').value;
+      const checkOut = document.getElementById('checkOutDate').value;
+      let nights = 0;
+      let total = 0;
+      if (checkIn && checkOut) {
+        nights = Math.max(0, Math.ceil((new Date(checkOut) - new Date(checkIn)) / (1000 * 60 * 60 * 24)));
+        total = nights * selectedRoom.price;
+      }
+      document.getElementById('summaryContent').innerHTML = `
+        <img src="${selectedRoom.image}" alt="${selectedRoom.title}" class="summary-room-img">
+        <div class="summary-room-name">${selectedRoom.title}</div>
+        <div class="summary-room-price">${formatCurrency(selectedRoom.price)} / night</div>
+        <div class="summary-line"><span>Room Rate</span><span>${formatCurrency(selectedRoom.price)}</span></div>
+        <div class="summary-line"><span>Nights</span><span>${nights || '—'}</span></div>
+        <div class="summary-line"><span>Check-in</span><span>${checkIn ? formatDate(checkIn) : '—'}</span></div>
+        <div class="summary-line"><span>Check-out</span><span>${checkOut ? formatDate(checkOut) : '—'}</span></div>
+        <div class="summary-line total"><span>Total Amount</span><span>${total ? formatCurrency(total) : '—'}</span></div>
+      `;
+    }
+
+    document.getElementById('bookingForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const errMsg = document.getElementById('errorMsg');
+      errMsg.style.display = 'none';
+
+      const payload = {
+        fullName: document.getElementById('fullName').value.trim(),
+        email: document.getElementById('email').value.trim(),
+        phone: document.getElementById('phone').value.trim(),
+        roomId: document.getElementById('roomId').value,
+        checkInDate: document.getElementById('checkInDate').value,
+        checkOutDate: document.getElementById('checkOutDate').value,
+        guests: parseInt(document.getElementById('guests').value),
+        specialRequest: document.getElementById('specialRequest').value.trim(),
+        idProofType: document.getElementById('idProofType').value,
+        idProofNumber: document.getElementById('idProofNumber').value.trim()
+      };
+
+      btn.innerHTML = '<span class="spinner"></span> Confirming...';
+      btn.disabled = true;
+
+      try {
+        const data = await apiFetch('/bookings', { method: 'POST', body: JSON.stringify(payload) });
+        document.getElementById('bookingContent').style.display = 'none';
+        document.getElementById('bookingSuccess').style.display = 'block';
+        document.getElementById('bookingRef').textContent = data.booking._id.slice(-8).toUpperCase();
+        showToast('Booking confirmed!', 'success');
+      } catch (err) {
+        errMsg.textContent = err.message;
+        errMsg.style.display = 'block';
+        btn.innerHTML = 'Confirm Booking';
+        btn.disabled = false;
+      }
+    });
+
+    loadRooms();
+  </script>
+</body>
+</html>

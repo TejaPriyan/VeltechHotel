@@ -1,0 +1,149 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — VELTECH Hotel</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body class="admin-body">
+  <div class="admin-layout">
+    <!-- SIDEBAR -->
+    <aside class="admin-sidebar" id="adminSidebar">
+      <div class="sidebar-brand">
+        <div class="brand-name">VELTECH</div>
+        <div class="brand-sub">Admin Portal</div>
+      </div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" data-tab="dashboard"><span>📊</span> Dashboard</a>
+        <a href="#" class="sidebar-link" data-tab="bookings"><span>📋</span> Bookings</a>
+        <a href="#" class="sidebar-link" data-tab="rooms"><span>🏨</span> Rooms</a>
+        <a href="#" class="sidebar-link" data-tab="users"><span>👥</span> Users</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="/" class="sidebar-link"><span>🏠</span> View Site</a>
+        <a href="#" class="sidebar-link" onclick="logout()"><span>��</span> Logout</a>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="admin-main">
+      <header class="admin-header">
+        <div class="admin-header-left">
+          <button class="sidebar-toggle" onclick="toggleSidebar()">☰</button>
+          <h1 class="admin-page-title" id="pageTitle">Dashboard</h1>
+        </div>
+        <div class="admin-header-right">
+          <span class="admin-user-badge" id="adminBadge">Admin</span>
+        </div>
+      </header>
+
+      <!-- DASHBOARD TAB -->
+      <div class="admin-tab active" id="tab-dashboard">
+        <div class="stats-cards" id="statsCards">
+          <div class="stat-card"><div class="stat-card-icon">👥</div><div class="stat-card-info"><div class="stat-card-num" id="statUsers">—</div><div class="stat-card-label">Total Users</div></div></div>
+          <div class="stat-card"><div class="stat-card-icon">📋</div><div class="stat-card-info"><div class="stat-card-num" id="statBookings">—</div><div class="stat-card-label">Total Bookings</div></div></div>
+          <div class="stat-card"><div class="stat-card-icon">🏨</div><div class="stat-card-info"><div class="stat-card-num" id="statRooms">—</div><div class="stat-card-label">Total Rooms</div></div></div>
+          <div class="stat-card revenue"><div class="stat-card-icon">💰</div><div class="stat-card-info"><div class="stat-card-num" id="statRevenue">—</div><div class="stat-card-label">Total Revenue</div></div></div>
+        </div>
+        <div class="admin-grid-2">
+          <div class="admin-card">
+            <div class="admin-card-header"><h3>Booking Status</h3></div>
+            <div id="statusChart"></div>
+          </div>
+          <div class="admin-card">
+            <div class="admin-card-header"><h3>Recent Bookings</h3></div>
+            <div id="recentBookings"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOKINGS TAB -->
+      <div class="admin-tab" id="tab-bookings">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>All Bookings</h3>
+            <div class="admin-filters">
+              <input type="text" id="bookingSearch" placeholder="Search name, email..." class="admin-search" oninput="filterBookings()">
+              <select id="bookingStatusFilter" onchange="filterBookings()" class="admin-select">
+                <option value="">All Status</option>
+                <option value="pending">Pending</option>
+                <option value="confirmed">Confirmed</option>
+                <option value="checked-in">Checked In</option>
+                <option value="checked-out">Checked Out</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table" id="bookingsTable">
+              <thead><tr><th>Guest</th><th>Room</th><th>Check-In</th><th>Check-Out</th><th>Amount</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="bookingsBody"><tr><td colspan="7" style="text-align:center; padding:40px;"><div class="spinner"></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROOMS TAB -->
+      <div class="admin-tab" id="tab-rooms">
+        <div class="admin-card">
+          <div class="admin-card-header">
+            <h3>Room Management</h3>
+            <button class="btn btn-primary btn-sm" onclick="openRoomModal()">+ Add Room</button>
+          </div>
+          <div class="table-wrap">
+            <table class="admin-table" id="roomsTable">
+              <thead><tr><th>Image</th><th>Room</th><th>Price</th><th>Capacity</th><th>Status</th><th>Actions</th></tr></thead>
+              <tbody id="roomsBody"><tr><td colspan="6" style="text-align:center; padding:40px;"><div class="spinner"></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- USERS TAB -->
+      <div class="admin-tab" id="tab-users">
+        <div class="admin-card">
+          <div class="admin-card-header"><h3>Registered Users</h3></div>
+          <div class="table-wrap">
+            <table class="admin-table">
+              <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Joined</th></tr></thead>
+              <tbody id="usersBody"><tr><td colspan="4" style="text-align:center; padding:40px;"><div class="spinner"></div></td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ROOM MODAL -->
+  <div class="modal-overlay" id="roomModal" onclick="closeRoomModal(event)">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">Add New Room</h3>
+        <button class="modal-close" onclick="closeRoomModal()">✕</button>
+      </div>
+      <form id="roomForm">
+        <input type="hidden" id="roomEditId">
+        <div class="form-row">
+          <div class="form-group"><label>Room Title</label><input type="text" id="rTitle" required placeholder="e.g. Deluxe Suite"></div>
+          <div class="form-group"><label>Price / Night (₹)</label><input type="number" id="rPrice" required placeholder="e.g. 5000"></div>
+        </div>
+        <div class="form-group"><label>Description</label><textarea id="rDesc" rows="3" required placeholder="Room description..."></textarea></div>
+        <div class="form-row">
+          <div class="form-group"><label>Image Path</label><input type="text" id="rImage" required placeholder="/hotel1.png"></div>
+          <div class="form-group"><label>Capacity</label><input type="number" id="rCapacity" required placeholder="2" min="1" max="10"></div>
+        </div>
+        <div class="form-group"><label>Amenities (comma separated)</label><input type="text" id="rAmenities" placeholder="King Bed, WiFi, AC, TV"></div>
+        <div class="modal-actions">
+          <button type="button" class="btn btn-ghost" onclick="closeRoomModal()">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="roomSubmitBtn">Save Room</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

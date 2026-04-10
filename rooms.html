@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rooms | VELTECH Hotel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: url('hotel2.jpg') no-repeat center center/cover;
+      color: #fff;
+      min-height: 100vh;
+    }
+
+    .overlay {
+      background: rgba(0, 0, 0, 0.6);
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 15px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.6em;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+      transition: color 0.3s;
+    }
+
+    nav a:hover {
+      color: #ffd700;
+    }
+
+    .content {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 30px;
+      font-size: 2em;
+    }
+
+    .room-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      width: 90%;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .room-card {
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .room-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+    }
+
+    .room-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .room-info {
+      padding: 15px;
+    }
+
+    .room-info h3 {
+      margin: 0 0 10px;
+    }
+
+    .price {
+      color: #ffd700;
+      font-weight: bold;
+      font-size: 1.1em;
+    }
+
+    footer {
+      background: rgba(0, 0, 0, 0.9);
+      text-align: center;
+      padding: 15px;
+      font-size: 0.9em;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay">
+    <header>
+      <h1>VELTECH HOTEL</h1>
+      <nav>
+        <a href="index.html">Home</a>
+        <a href="rooms.html">Rooms</a>
+        <a href="signup.html">Signup</a>
+        <a href="login.html">Login</a>
+      </nav>
+    </header>
+
+    <section class="content">
+      <h2>Our Rooms & Suites</h2>
+
+      <div class="room-grid">
+        <div class="room-card">
+          <img src="hotel1.png" alt="Deluxe Room">
+          <div class="room-info">
+            <h3>Deluxe Room</h3>
+            <p>Spacious and elegant with premium comfort.</p>
+            <p class="price">₹3,999 / night</p>
+          </div>
+        </div>
+
+        <div class="room-card">
+          <img src="hotel2.jpg" alt="Executive Suite">
+          <div class="room-info">
+            <h3>Executive Suite</h3>
+            <p>Designed for business travelers and families.</p>
+            <p class="price">₹5,499 / night</p>
+          </div>
+        </div>
+
+        <div class="room-card">
+          <img src="hotel3.jpg" alt="Premium Suite">
+          <div class="room-info">
+            <h3>Premium Suite</h3>
+            <p>Luxury with breathtaking views and king-size bed.</p>
+            <p class="price">₹7,499 / night</p>
+          </div>
+        </div>
+
+        <div class="room-card">
+          <img src="hotel4.jpeg" alt="Family Room">
+          <div class="room-info">
+            <h3>Family Room</h3>
+            <p>Perfect for family vacations and group stays.</p>
+            <p class="price">₹4,999 / night</p>
+          </div>
+        </div>
+
+        <div class="room-card">
+          <img src="hotel5.jpeg" alt="Luxury Suite">
+          <div class="room-info">
+            <h3>Luxury Suite</h3>
+            <p>Top-tier comfort, elegance, and modern decor.</p>
+            <p class="price">₹9,999 / night</p>
+          </div>
+        </div>
+
+        <div class="room-card">
+          <img src="hotel6.jpeg" alt="Standard Room">
+          <div class="room-info">
+            <h3>Standard Room</h3>
+            <p>Affordable comfort with all basic amenities.</p>
+            <p class="price">₹2,499 / night</p>
+          </div>
+        </div>
+
+        <div class="room-card">
+          <img src="hotel7.jpeg" alt="Royal Suite">
+          <div class="room-info">
+            <h3>Royal Suite</h3>
+            <p>Elegant interiors and exclusive private facilities.</p>
+            <p class="price">₹12,999 / night</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      &copy; 2025 VELTECH Hotel | Designed by Teja Priyan
+    </footer>
+  </div>
+</body>
+</html>

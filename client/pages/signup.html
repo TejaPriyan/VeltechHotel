@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up — VELTECH Hotel</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <style>
+    body {
+      background: url('/hotel5.jpeg') center/cover no-repeat fixed;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    .auth-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.7);
+      backdrop-filter: blur(4px);
+      z-index: 0;
+    }
+    .auth-page {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 100px 20px 40px;
+      position: relative;
+      z-index: 1;
+    }
+    .auth-card {
+      width: 100%;
+      max-width: 440px;
+      background: rgba(17,17,17,0.92);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      padding: 44px 40px;
+      backdrop-filter: blur(20px);
+      box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    }
+    .auth-logo { text-align: center; margin-bottom: 28px; }
+    .auth-logo .brand { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--gold); letter-spacing: 2px; }
+    .auth-logo .sub { font-size: 0.7rem; color: var(--text-muted); letter-spacing: 3px; text-transform: uppercase; }
+    .auth-title { font-size: 1.6rem; color: var(--white); margin-bottom: 6px; }
+    .auth-subtitle { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 28px; }
+    .error-msg { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.3); color: #fca5a5; padding: 12px 16px; border-radius: var(--radius); font-size: 0.88rem; margin-bottom: 16px; display: none; }
+    .btn-full { width: 100%; justify-content: center; }
+    .auth-footer { text-align: center; margin-top: 24px; font-size: 0.88rem; color: var(--text-muted); }
+    .auth-footer a { color: var(--gold); font-weight: 500; }
+    .auth-footer a:hover { text-decoration: underline; }
+    .pw-strength { height: 4px; border-radius: 2px; margin-top: 6px; background: rgba(255,255,255,0.1); overflow: hidden; }
+    .pw-strength-bar { height: 100%; border-radius: 2px; transition: all 0.3s; width: 0; }
+    .input-icon-wrap { position: relative; }
+    .input-icon-wrap input { padding-right: 44px; }
+    .toggle-pw { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); cursor: pointer; color: var(--text-muted); font-size: 1rem; background: none; border: none; }
+  </style>
+</head>
+<body>
+  <div class="auth-overlay"></div>
+  <nav class="navbar" style="z-index:10;">
+    <a href="/" class="nav-brand">
+      <div><span class="brand-name">VELTECH</span><span class="brand-sub">Hotel & Suites</span></div>
+    </a>
+    <ul class="nav-links" id="nav-links"></ul>
+  </nav>
+
+  <div class="auth-page">
+    <div class="auth-card">
+      <div class="auth-logo">
+        <div class="brand">VELTECH</div>
+        <div class="sub">Hotel & Suites</div>
+      </div>
+      <h2 class="auth-title">Create Account</h2>
+      <p class="auth-subtitle">Join us for an exclusive luxury experience</p>
+
+      <div class="error-msg" id="errorMsg"></div>
+
+      <form id="signupForm">
+        <div class="form-group">
+          <label>Full Name</label>
+          <input type="text" id="name" placeholder="Your full name" required autocomplete="name">
+        </div>
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" required autocomplete="email">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <div class="input-icon-wrap">
+            <input type="password" id="password" placeholder="Min. 6 characters" required autocomplete="new-password" oninput="checkStrength(this.value)">
+            <button type="button" class="toggle-pw" onclick="togglePw('password')">👁</button>
+          </div>
+          <div class="pw-strength"><div class="pw-strength-bar" id="strengthBar"></div></div>
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <div class="input-icon-wrap">
+            <input type="password" id="confirmPassword" placeholder="Repeat your password" required autocomplete="new-password">
+            <button type="button" class="toggle-pw" onclick="togglePw('confirmPassword')">👁</button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-full btn-lg" id="submitBtn">
+          Create Account
+        </button>
+      </form>
+
+      <div class="auth-footer">
+        Already have an account? <a href="/login">Sign in</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/utils.js"></script>
+  <script>
+    document.getElementById('nav-links').innerHTML = `
+      <li><a href="/">Home</a></li>
+      <li><a href="/rooms">Rooms</a></li>
+      <li><a href="/login" class="btn-nav">Login</a></li>
+    `;
+
+    if (isLoggedIn()) window.location.href = '/';
+
+    function togglePw(id) {
+      const pw = document.getElementById(id);
+      pw.type = pw.type === 'password' ? 'text' : 'password';
+    }
+
+    function checkStrength(val) {
+      const bar = document.getElementById('strengthBar');
+      let strength = 0;
+      if (val.length >= 6) strength++;
+      if (val.length >= 10) strength++;
+      if (/[A-Z]/.test(val)) strength++;
+      if (/[0-9]/.test(val)) strength++;
+      if (/[^A-Za-z0-9]/.test(val)) strength++;
+      const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#16a34a'];
+      bar.style.width = (strength * 20) + '%';
+      bar.style.background = colors[strength - 1] || 'transparent';
+    }
+
+    document.getElementById('signupForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      const errMsg = document.getElementById('errorMsg');
+      errMsg.style.display = 'none';
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      if (password !== confirmPassword) {
+        errMsg.textContent = 'Passwords do not match';
+        errMsg.style.display = 'block';
+        return;
+      }
+
+      btn.innerHTML = '<span class="spinner"></span> Creating account...';
+      btn.disabled = true;
+
+      try {
+        const data = await apiFetch('/auth/signup', {
+          method: 'POST',
+          body: JSON.stringify({ name, email, password })
+        });
+        setAuth(data.token, data.user);
+        showToast('Account created successfully!', 'success');
+        setTimeout(() => window.location.href = '/welcome', 800);
+      } catch (err) {
+        errMsg.textContent = err.message;
+        errMsg.style.display = 'block';
+        btn.innerHTML = 'Create Account';
+        btn.disabled = false;
+      }
+    });
+  </script>
+</body>
+</html>

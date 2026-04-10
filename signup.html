@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup | VELTECH Hotel</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: url('hotel5.jpeg') no-repeat center center/cover;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 1;
+    }
+
+    .signup-container {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 40px;
+      border-radius: 15px;
+      width: 350px;
+      box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+      text-align: center;
+      backdrop-filter: blur(8px);
+    }
+
+    h2 {
+      margin-bottom: 20px;
+      color: #ffd700;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      outline: none;
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      font-size: 1em;
+    }
+
+    input::placeholder {
+      color: #eee;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      background-color: #ffd700;
+      color: #000;
+      border-radius: 8px;
+      font-size: 1em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background-color: #fff;
+      color: #000;
+    }
+
+    a {
+      color: #ffd700;
+      text-decoration: none;
+      display: block;
+      margin-top: 15px;
+      font-size: 0.9em;
+    }
+
+    header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: rgba(0, 0, 0, 0.85);
+      padding: 15px 30px;
+      z-index: 3;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.5em;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    nav a:hover {
+      color: #eaff00;
+    }
+
+    .error {
+      color: #f1a1a1;
+      font-size: 0.9em;
+      margin-bottom: 10px;
+    }
+
+    .success {
+      color: #00ff99;
+      font-size: 1em;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <header>
+    <h1>VELTECH HOTEL</h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="rooms.html">Rooms</a>
+      <a href="signup.html">Signup</a>
+      <a href="login.html">Login</a>
+    </nav>
+  </header>
+
+  <div class="signup-container">
+    <h2>Create Your Account</h2>
+    <form id="signupForm">
+      <input type="text" id="name" placeholder="Full Name" required>
+      <input type="email" id="email" placeholder="Email" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <input type="password" id="confirmPassword" placeholder="Confirm Password" required>
+      <div id="message" class="error"></div>
+      <button type="submit">Sign Up</button>
+    </form>
+    <a href="login.html">Already have an account? Login</a>
+  </div>
+
+  <script>
+    const form = document.getElementById('signupForm');
+    const message = document.getElementById('message');
+
+    form.addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirmPassword').value;
+
+      
+      if (!name || !email || !password || !confirmPassword) {
+        message.textContent = "⚠️ Please fill out all fields.";
+        return;
+      }
+
+      if (password.length < 6) {
+        message.textContent = "⚠️ Password must be at least 6 characters.";
+        return;
+      }
+
+      if (password !== confirmPassword) {
+        message.textContent = "⚠️ Passwords do not match.";
+        return;
+      }
+
+      
+      message.textContent = "";
+      alert("✅ Signup successful! Redirecting...");
+      window.location.href = "welcome.html"; 
+    });
+  </script>
+</body>
+</html>

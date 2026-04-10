@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rooms & Suites — VELTECH Hotel</title>
+  <link rel="stylesheet" href="/css/main.css">
+  <style>
+    .page-hero {
+      height: 340px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 72px;
+      overflow: hidden;
+    }
+    .page-hero-bg {
+      position: absolute; inset: 0;
+      background: url('/hotel3.jpg') center/cover no-repeat;
+    }
+    .page-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.6), rgba(10,10,10,0.9));
+    }
+    .page-hero-content {
+      position: relative; z-index: 2;
+      text-align: center;
+    }
+    .page-hero-content h1 { font-size: 2.8rem; color: var(--white); margin-bottom: 10px; }
+    .page-hero-content p { color: var(--text-muted); font-size: 1rem; }
+
+    .filters-bar {
+      background: var(--dark-2);
+      border-bottom: 1px solid var(--glass-border);
+      padding: 20px 40px;
+      position: sticky;
+      top: 72px;
+      z-index: 100;
+    }
+    .filters-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .filter-btn {
+      padding: 8px 20px;
+      border-radius: 30px;
+      border: 1px solid var(--glass-border);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: var(--transition);
+      font-family: 'Inter', sans-serif;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--gold);
+      color: var(--dark);
+      border-color: var(--gold);
+    }
+
+    .rooms-section {
+      padding: 60px 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .rooms-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 28px;
+    }
+
+    .room-card {
+      background: var(--dark-3);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      transition: var(--transition);
+    }
+    .room-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 0 1px var(--gold-dark);
+    }
+    .room-card-img {
+      position: relative;
+      height: 230px;
+      overflow: hidden;
+    }
+    .room-card-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+    .room-card:hover .room-card-img img { transform: scale(1.08); }
+    .room-card-badge {
+      position: absolute;
+      top: 14px; right: 14px;
+    }
+    .room-card-body { padding: 24px; }
+    .room-card-title { font-size: 1.25rem; color: var(--white); margin-bottom: 8px; }
+    .room-card-desc { font-size: 0.88rem; color: var(--text-muted); margin-bottom: 16px; line-height: 1.6; }
+    .room-amenities {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .amenity-tag {
+      padding: 4px 10px;
+      background: rgba(201,168,76,0.08);
+      border: 1px solid rgba(201,168,76,0.15);
+      border-radius: 20px;
+      font-size: 0.75rem;
+      color: var(--gold);
+    }
+    .room-card-meta {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 16px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .room-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 16px;
+      border-top: 1px solid var(--glass-border);
+    }
+    .room-price { font-size: 1.4rem; color: var(--gold); font-weight: 700; }
+    .room-price span { font-size: 0.8rem; color: var(--text-muted); font-weight: 400; }
+
+    @media (max-width: 768px) {
+      .rooms-section { padding: 40px 20px; }
+      .filters-bar { padding: 16px 20px; }
+      .page-hero-content h1 { font-size: 2rem; }
+    }
+  </style>
+</head>
+<body>
+  <div id="navbar-placeholder"></div>
+
+  <div class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-content">
+      <div class="section-tag">Accommodations</div>
+      <h1>Rooms & Suites</h1>
+      <p>Discover your perfect sanctuary among our curated collection</p>
+    </div>
+  </div>
+
+  <div class="filters-bar">
+    <div class="filters-inner">
+      <span style="font-size:0.82rem; color:var(--text-muted); margin-right:4px;">Filter:</span>
+      <button class="filter-btn active" data-filter="all">All Rooms</button>
+      <button class="filter-btn" data-filter="available">Available</button>
+      <button class="filter-btn" data-filter="budget">Under ₹5,000</button>
+      <button class="filter-btn" data-filter="luxury">₹5,000+</button>
+    </div>
+  </div>
+
+  <div class="rooms-section">
+    <div class="rooms-grid" id="roomsGrid">
+      <div class="empty-state" style="grid-column:1/-1"><div class="spinner"></div><p style="margin-top:16px">Loading rooms...</p></div>
+    </div>
+  </div>
+
+  <div id="footer-placeholder"></div>
+
+  <script src="/js/utils.js"></script>
+  <script>
+    document.getElementById('navbar-placeholder').innerHTML = navbarHTML();
+    document.getElementById('footer-placeholder').innerHTML = footerHTML();
+    setupNavbar();
+
+    let allRooms = [];
+
+    // Get URL params for pre-fill
+    const params = new URLSearchParams(window.location.search);
+    const preCheckIn = params.get('checkIn') || '';
+    const preCheckOut = params.get('checkOut') || '';
+
+    async function loadRooms() {
+      try {
+        allRooms = await apiFetch('/rooms');
+        renderRooms(allRooms);
+      } catch (err) {
+        document.getElementById('roomsGrid').innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🏨</div><h3>Unable to load rooms</h3><p>Please try again later</p></div>';
+      }
+    }
+
+    function renderRooms(rooms) {
+      const grid = document.getElementById('roomsGrid');
+      if (!rooms.length) {
+        grid.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🔍</div><h3>No rooms found</h3><p>Try a different filter</p></div>';
+        return;
+      }
+      grid.innerHTML = rooms.map(room => `
+        <div class="room-card">
+          <div class="room-card-img">
+            <img src="${room.image}" alt="${room.title}" loading="lazy">
+            <div class="room-card-badge">
+              <span class="badge ${room.available ? 'badge-available' : 'badge-unavailable'}">
+                ${room.available ? '✓ Available' : '✕ Unavailable'}
+              </span>
+            </div>
+          </div>
+          <div class="room-card-body">
+            <h3 class="room-card-title">${room.title}</h3>
+            <p class="room-card-desc">${room.description}</p>
+            <div class="room-amenities">
+              ${room.amenities.slice(0, 4).map(a => `<span class="amenity-tag">${a}</span>`).join('')}
+              ${room.amenities.length > 4 ? `<span class="amenity-tag">+${room.amenities.length - 4} more</span>` : ''}
+            </div>
+            <div class="room-card-meta">
+              <span>👥 Up to ${room.capacity} guests</span>
+              <span>🛏️ ${room.amenities[0] || 'Luxury Bed'}</span>
+            </div>
+            <div class="room-card-footer">
+              <div class="room-price">${formatCurrency(room.price)} <span>/ night</span></div>
+              ${room.available
+                ? `<a href="/booking?roomId=${room._id}${preCheckIn ? '&checkIn=' + preCheckIn : ''}${preCheckOut ? '&checkOut=' + preCheckOut : ''}" class="btn btn-primary btn-sm">Book Now</a>`
+                : `<button class="btn btn-ghost btn-sm" disabled>Unavailable</button>`
+              }
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Filters
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        let filtered = allRooms;
+        if (filter === 'available') filtered = allRooms.filter(r => r.available);
+        else if (filter === 'budget') filtered = allRooms.filter(r => r.price < 5000);
+        else if (filter === 'luxury') filtered = allRooms.filter(r => r.price >= 5000);
+        renderRooms(filtered);
+      });
+    });
+
+    loadRooms();
+  </script>
+</body>
+</html>
