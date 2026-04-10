@@ -3,9 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-const DB_PATH = process.env.NODE_ENV === 'production'
-  ? '/data/veltech.db'
-  : path.join(__dirname, 'veltech.db');
+const DB_PATH = path.join(__dirname, 'veltech.db');
 
 let db = null;
 

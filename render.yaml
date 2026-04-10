@@ -12,7 +12,3 @@ services:
         value: veltech_super_secret_key_change_this
       - key: NODE_ENV
         value: production
-    disk:
-      name: veltech-data
-      mountPath: /data
-      sizeGB: 1
