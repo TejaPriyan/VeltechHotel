@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://veltechhotel.onrender.com/sitemap.xml
