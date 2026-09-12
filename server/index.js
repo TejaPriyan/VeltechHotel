@@ -8,6 +8,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client')));
 // Search Console Verification, Robots, and Sitemap routes
+app.get('/google2af4e1ed3191321d.html', (req, res) => res.type('text/html').send('google-site-verification: google2af4e1ed3191321d.html'));
 app.get('/google87bb3bc53ec346d2.html', (req, res) => {
   res.type('text/html').send('google-site-verification: google87bb3bc53ec346d2.html');
 });
