@@ -4,7 +4,7 @@
 
 [![Live Website](https://img.shields.io/badge/🌐_Live_Demo-veltechhotel.onrender.com-00b4d8?style=for-the-badge&logo=render&logoColor=white)](https://veltechhotel.onrender.com/)
 [![GitHub Repo](https://img.shields.io/badge/GitHub-Repository-181717?style=for-the-badge&logo=github&logoColor=white)](https://github.com/TejaPriyan/VeltechHotel)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](LICENSE)
+[![License: All Rights Reserved](https://img.shields.io/badge/License-All_Rights_Reserved-red.svg)](LICENSE)
 
 > **🌐 Live Website:** [https://veltechhotel.onrender.com/](https://veltechhotel.onrender.com/)
 
@@ -68,4 +68,4 @@
 
 ## 📄 License
 
-This project is licensed under the MIT License.
+This project is protected under All Rights Reserved.
