@@ -7,6 +7,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, '../client')));
+// Search Console Verification, Robots, and Sitemap routes
+app.get('/google87bb3bc53ec346d2.html', (req, res) => {
+  res.type('text/html').send('google-site-verification: google87bb3bc53ec346d2.html');
+});
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain').sendFile(path.join(__dirname, '../client/robots.txt'));
+});
+app.get('/sitemap.xml', (req, res) => {
+  res.type('application/xml').sendFile(path.join(__dirname, '../client/sitemap.xml'));
+});
+
 
 // Serve HTML pages
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, '../client/pages/index.html')));
