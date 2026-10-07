@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { query } = require('../database');
 const { protect } = require('../middleware/auth');
+const { validateStay } = require('../stay');
 
 const fmt = (b) => {
   if (!b) return null;
@@ -30,11 +31,18 @@ router.post('/', protect, (req, res) => {
     if (!room) return res.status(404).json({ message: 'Room not found' });
     if (!room.available) return res.status(400).json({ message: 'Room is not available' });
 
-    const checkIn = new Date(checkInDate);
-    const checkOut = new Date(checkOutDate);
-    if (checkOut <= checkIn) return res.status(400).json({ message: 'Check-out must be after check-in' });
-
-    const nights = Math.ceil((checkOut - checkIn) / (1000 * 60 * 60 * 24));
+    const stay = validateStay(checkInDate, checkOutDate, guests ?? 1, room.capacity);
+    if (stay.error) return res.status(400).json({ message: stay.error });
+    // sql.js operations are synchronous; no other request can interleave this
+    // availability check and INSERT in this single-process deployment.
+    const overlap = query.get(
+      `SELECT id FROM bookings WHERE room_id = ?
+       AND booking_status IN ('pending','confirmed','checked-in')
+       AND check_in_date < ? AND check_out_date > ? LIMIT 1`,
+      [roomId, checkOutDate, checkInDate]
+    );
+    if (overlap) return res.status(409).json({ message: 'This room is already reserved for the selected dates' });
+    const nights = stay.nights;
     const totalAmount = nights * room.price;
 
     const result = query.run(
@@ -45,7 +53,7 @@ router.post('/', protect, (req, res) => {
 
     const booking = fmt(query.get('SELECT * FROM bookings WHERE id = ?', [result.lastInsertRowid]));
     booking.roomId = { _id: String(room.id), title: room.title, price: room.price, image: room.image };
-    res.status(201).json({ message: 'Booking confirmed!', booking });
+    res.status(201).json({ message: 'Booking request received — awaiting confirmation', booking });
   } catch (err) {
     console.error('Booking error:', err.message);
     res.status(500).json({ message: 'Server error' });

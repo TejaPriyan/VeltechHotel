@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 
-const DB_PATH = path.join(__dirname, 'veltech.db');
+const DB_PATH = process.env.DB_PATH || path.join(__dirname, 'veltech.db');
 
 let db = null;
 
@@ -81,12 +81,15 @@ const initDb = async () => {
     console.log('✅ Rooms seeded');
   }
 
-  // Seed admin
-  const adminRows = db.exec("SELECT id FROM users WHERE email='admin@veltechhotel.com'");
-  if (!adminRows.length || !adminRows[0].values.length) {
-    const hashed = bcrypt.hashSync('admin123', 12);
-    db.run("INSERT INTO users (name,email,password,role) VALUES (?,?,?,'admin')", ['Admin', 'admin@veltechhotel.com', hashed]);
-    console.log('✅ Admin seeded: admin@veltechhotel.com / admin123');
+  // Optional one-time bootstrap. Existing administrators are never overwritten.
+  const adminEmail = process.env.ADMIN_EMAIL?.trim().toLowerCase();
+  const adminPassword = process.env.ADMIN_PASSWORD;
+  const hasAdmin = db.exec("SELECT id FROM users WHERE role='admin' LIMIT 1")[0]?.values.length;
+  if (!hasAdmin && adminEmail && adminPassword) {
+    if (adminPassword.length < 16) throw new Error('ADMIN_PASSWORD must contain at least 16 characters');
+    db.run('INSERT INTO users (name,email,password,role) VALUES (?,?,?,?)',
+      ['Administrator', adminEmail, bcrypt.hashSync(adminPassword, 12), 'admin']);
+    console.log('Administrator created from bootstrap configuration. Remove ADMIN_PASSWORD after setup.');
   }
 
   saveDb();
